@@ -1,2 +1,6 @@
+#data
 data/raw/
+*.zip
+
+
 .ipynb_checkpoints
