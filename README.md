@@ -1,1 +1,12 @@
-# dsc180_project_structure
+# Replication Project
+
+LETS GO
+
+## Overview
+
+Say hello Shutong
+
+## Section-I-dont-know
+
+???
+
