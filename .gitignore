@@ -1,6 +1,7 @@
 #data
 data/raw/
 *.zip
-
+id.txt
+.twarc
 
 .ipynb_checkpoints
