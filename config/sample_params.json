@@ -1,4 +1,4 @@
 {
-    'seed': 400,
-    'sample_size': 10000
+    "seed": 400,
+    "sample_size": 10000
 }

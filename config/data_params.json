@@ -1,6 +1,6 @@
 {
-    'raw_data_path': '/teams/DSC180A_FA20_A00/b02group08/2020-10-02_clean-dataset.tsv',
-    'dehydrated_data_path': '/dsc180_project_structure/data/temp/tweet_ids.txt',
-    'rehydrated_data_path': '/dsc180_project_structure/data/temp/tweets_hydrated.jsonl',
-    'id_column': 'tweet_id'
+    "raw_data_path": "/teams/DSC180A_FA20_A00/b02group08/2020-10-02_clean-dataset.tsv",
+    "dehydrated_data_path": "./data/temp/tweet_ids.txt",
+    "rehydrated_data_path": "./data/temp/tweets_hydrated.jsonl",
+    "id_column": "tweet_id"
 }
