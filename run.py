@@ -23,12 +23,12 @@ def main():
     sample_size = sample_params['sample_size']
     
     # sample raw data of tweet ids, rehydrate them (enrich them with tweet contents)
-#     generate_dataset.rehydrate_tweets(raw_data_path, dehydrated_data_path, rehydrated_data_path, seed, sample_size, id_column, twarc_path)
+    generate_dataset.rehydrate_tweets(raw_data_path, dehydrated_data_path, rehydrated_data_path, seed, sample_size, id_column, twarc_path)
     
     # Load cleaned data
     tweets = generate_dataset.generate_dataframe(rehydrated_data_path, rehydrated_df_path)
     
-#     return display_dataframe()
+    return generate_dataset.display_dataframe(rehydrated_df_path)
 
 if __name__ == '__main__':
     args = sys.argv[1:]
