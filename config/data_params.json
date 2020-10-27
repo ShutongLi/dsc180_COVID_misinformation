@@ -3,5 +3,6 @@
     "dehydrated_data_path": "~/dsc180_project_structure/data/temp/tweet_ids.txt",
     "rehydrated_data_path": "~/dsc180_project_structure/data/temp/tweets_hydrated.jsonl",
     "twarc_path": "~/.local/bin/twarc",
-    "id_column": "tweet_id"
+    "id_column": "tweet_id",
+    "rehydrated_df_path": "~/dsc180_project_structure/data/temp/tweets_processing.csv"
 }
