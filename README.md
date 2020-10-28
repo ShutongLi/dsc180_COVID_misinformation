@@ -3,7 +3,7 @@ Observing how misinformation and conspiracies are spread through social media.
 
 ## Overview
 
-Our goal currently is to construct a proper data ingestion pipeline, which will properly rehydrate a set of Tweet ID's obtained from the [Panacea Lab at Georgia State University](http://www.panacealab.org/covid19/). This dataset will then be loaded as a Pandas DataFrame for later analysis.
+Our goal explore the ways and extent to which misinformation is spread throughout social media platforms, specifically Twitter. Our scope will be limited to the current COVID-19 pandemic, and data will be obtained from the [Panacea Lab at Georgia State University](http://www.panacealab.org/covid19/). 
 
 ## Contents
 
@@ -20,11 +20,7 @@ Please configure Twarc with your proper keys before running with the following c
 twarc configure
 ```
 
-Note that you may not be able to run Twarc on DSMLP properly without accessing its file path, in which case you can run the following:
-
-```
-~/.local/bin/twarc configure
-```
+Note that you may not be able to run Twarc without specifying the correct file location. A Docker setup will be provided in the near future.
 
 After you have [properly configured Twarc](https://scholarslab.github.io/learn-twarc/01-quick-start.html), set your data paths 
 to your Tweet ID set. Running run.py will return a set of properly rehydrated tweets. 
