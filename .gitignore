@@ -3,5 +3,8 @@ data/raw/
 *.zip
 id.txt
 .twarc
+twarc.log
+.idea
+__pycache__
 
 .ipynb_checkpoints
