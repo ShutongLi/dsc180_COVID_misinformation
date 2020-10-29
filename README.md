@@ -24,3 +24,15 @@ Note that you may not be able to run Twarc without specifying the correct file l
 
 After you have [properly configured Twarc](https://scholarslab.github.io/learn-twarc/01-quick-start.html), set your data paths 
 to your Tweet ID set. Running run.py will return a set of properly rehydrated tweets. 
+
+## Project Work Splits
+Hasan
+- Implemented data auto-download
+- Organized config
+- Wrote Readme
+- Wrote writeup introduction
+
+Shutong
+- Implemented data hydration
+- Organized config
+- Wrote writeup description/purpose
