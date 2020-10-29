@@ -1,8 +1,8 @@
 {
-    "raw_data_path": "/teams/DSC180A_FA20_A00/b02group08/2020-10-02_clean-dataset.tsv",
-    "dehydrated_data_path": "~/dsc180_project_structure/data/temp/tweet_ids.txt",
-    "rehydrated_data_path": "~/dsc180_project_structure/data/temp/tweets_hydrated.jsonl",
+    "raw_data_path": "/teams/DSC180A_FA20_A00/b02group08",
+    "dehydrated_data_path": "~/dsc180_project_structure/data/temp",
     "twarc_path": "~/.local/bin/twarc",
     "id_column": "tweet_id",
-    "rehydrated_df_path": "~/dsc180_project_structure/data/temp/tweets_processing.csv"
+    "rehydrated_df_path": "~/dsc180_project_structure/data/temp/tweets_processing.csv",
+    "day": "2020-10-02"
 }
