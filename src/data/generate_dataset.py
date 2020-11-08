@@ -5,6 +5,7 @@ import gzip
 import shutil
 from datetime import datetime, date, timedelta
 
+# pre-condition: from_time does not change to an earlier time (kinda bad but doesn't hurt here)
 # Get the last_day_added based on the latest date in your dataset
 def get_last_day(raw_data_path, from_time):
     # Failsafe in case you have no raw data
@@ -23,18 +24,23 @@ def get_last_day(raw_data_path, from_time):
     return last_day_added
 
 # Updates your dataset FROM from_time date (YYYY-MM-DD) TO today
-def download_latest_datasets(raw_data_path, from_time):
+def download_latest_datasets(raw_data_path, from_time, to_time, cleaned = False):
     # Get days of data between range
-    date_today = date.today()
     last_day = get_last_day(raw_data_path, from_time)
-    days_between = pd.date_range(last_day, date_today, freq='d')
+    days_between = pd.date_range(last_day, to_time, freq='d')
+    
+    # suffix _cleaned needed
+    clean_suffix = ''
+    if cleaned:
+        clean_suffix = '_clean'
     
     # Download the data from each day
     for day in days_between:
         
         # Download gzipped file
         day_str = datetime.strftime(day, '%Y-%m-%d')
-        url = f'https://github.com/thepanacealab/covid19_twitter/blob/master/dailies/{day_str}/{day_str}_clean-dataset.tsv.gz?raw=true'
+        url = f'https://github.com/thepanacealab/covid19_twitter/blob/master/dailies/{day_str}/{day_str}{clean_suffix}-dataset.tsv.gz?raw=true'
+        print(f'requesting from {url}')
         
         try:
             # Make directories if they don't already exist
@@ -44,8 +50,8 @@ def download_latest_datasets(raw_data_path, from_time):
         
         # Separate gzipped and TSV files
         try:
-            filename = f'{raw_data_path}/gzips/{day_str}_clean-dataset.tsv.gz'
-            filename2 = f'{raw_data_path}/{day_str}_clean-dataset.tsv'
+            filename = f'{raw_data_path}/gzips/{day_str}{clean_suffix}-dataset.tsv.gz'
+            filename2 = f'{raw_data_path}/{day_str}{clean_suffix}-dataset.tsv'
             with open(filename, 'wb') as f:
                 r = requests.get(url)
                 f.write(r.content)

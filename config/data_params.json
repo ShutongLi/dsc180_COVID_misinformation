@@ -1,8 +1,11 @@
 {
-    "raw_data_path": "/teams/DSC180A_FA20_A00/b02group08",
+    "raw_data_path": "../shared_dir",
     "dehydrated_data_path": "~/dsc180_project_structure/data/temp",
     "twarc_path": "~/.local/bin/twarc",
     "id_column": "tweet_id",
     "rehydrated_df_path": "~/dsc180_project_structure/data/temp/tweets_processing.csv",
-    "day": "2020-10-02"
+    "day": "2020-10-02",
+    "from_day": "2020-03-22",
+    "to_day": "2020-07-31",
+    "want_cleaned": false
 }
