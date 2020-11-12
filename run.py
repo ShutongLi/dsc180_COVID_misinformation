@@ -14,7 +14,9 @@ def main():
     # Cfg variables
     raw_data_path = data_params['raw_data_path']
     processed_data_path = data_params['dehydrated_data_path']
+    project_path = data_params['absolute_project_path']
     twarc_path = data_params['twarc_path']
+    rehydrated_json_path = data_params['rehydrated_json_path']
     rehydrated_df_path = data_params['rehydrated_df_path']
     id_column = data_params['id_column']
     from_day = data_params['from_day']

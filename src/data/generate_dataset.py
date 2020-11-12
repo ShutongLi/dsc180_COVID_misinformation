@@ -66,17 +66,42 @@ def download_latest_datasets(raw_data_path, from_time, to_time, cleaned = False)
             os.remove(filename2)
     return 
 
+# helper method for sample_files
+def sample(df, sample_rate, id_column):
+    return df.iloc[::sample_rate, :][id_column]
+
+def sample_files(raw_data_path, sample_rate, dehydrated_sample_path, id_column):
+    if not os.path.exists(dehydrated_sample_path):
+        os.makedirs(dehydrated_sample_path)
+    # find the filenames 
+    file_names = sorted([name for name in os.listdir(raw_data_path) if 'dataset' in name])
+    # for every .tsv under the directory
+    for file in file_names:
+        # read the file into df
+        df = pd.read_table(f'{os.path.join(raw_data_path, file)}')
+        # sample it
+        a_sample = sample(df, sample_rate, id_column)
+        # get the saving file name {original_file_name}.txt 
+        fname = file.split('.')[0] + '.txt'
+        print(f'sampling for dataset on {fname}')
+        # save the sample to the path
+        a_sample.to_csv(os.path.join(dehydrated_sample_path, fname), index = False, header = None)
+
 # Get the information from raw tweets we just obtained
-def rehydrate_tweets(raw_data_path, processed_data_path, seed, sample_size, id_column, twarc_location, day):
-    # Sample data to rehydrate
-    df = pd.read_table(f'{raw_data_path}/{day}_clean-dataset.tsv')
-    id_sample = df[id_column].sample(n=sample_size, replace = False, random_state = seed)
-
-    # Create text file for rehydration
-    id_sample.to_csv(f'{processed_data_path}/{day}_tweet_ids', index=False, header=False)
-
-    # Rehydrate text file
-    os.system(f'{twarc_location} hydrate {processed_data_path}/{day}_tweet_ids > {processed_data_path}/{day}_tweets_hydrated.jsonl')
+# processed_data_path is the path for the sampled dehydrated ids
+def rehydrate_tweets(raw_data_path, processed_data_path, project_path, json_data_path, sample_rate, id_column, twarc_location):
+    # Sample data and write to processed_data_path
+    sample_files(raw_data_path, sample_rate, processed_data_path, id_column)
     
-    # Display example
-    return pd.read_json(f'{processed_data_path}/{day}_tweets_hydrated.jsonl', lines=True).head()
+    # Rehydrate text file
+    if not os.path.exists(json_data_path):
+        os.makedirs(json_data_path)
+    for file in os.listdir(processed_data_path):
+        # absolute path for txt id file
+        abs_path = project_path + os.path.join(processed_data_path, file)
+        # absolute path for target directory
+        name = file.split('.')[0] + '.jsonl'
+        abs_target_path = project_path + json_data_path + name
+        print(f'saving to {abs_target_path}')
+        
+        os.system(f'{twarc_location} hydrate {abs_path} > {abs_target_path}')

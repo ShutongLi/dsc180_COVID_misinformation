@@ -1,8 +1,10 @@
 {
     "raw_data_path": "../shared_dir",
-    "dehydrated_data_path": "~/dsc180_project_structure/data/temp",
+    "dehydrated_data_path": "data/temp/sample_by_date/",
+    "absolute_project_path": "~/dsc180_project_structure/",
     "twarc_path": "~/.local/bin/twarc",
     "id_column": "tweet_id",
+    "rehydrated_json_path": "data/temp/rehydration/",
     "rehydrated_df_path": "~/dsc180_project_structure/data/temp/tweets_processing.csv",
     "day": "2020-10-02",
     "from_day": "2020-03-22",
