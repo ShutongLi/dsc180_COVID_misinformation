@@ -3,6 +3,7 @@ import pandas as pd
 import requests
 import gzip
 import shutil
+import json
 from datetime import datetime, date, timedelta
 
 # pre-condition: from_time does not change to an earlier time (kinda bad but doesn't hurt here)
@@ -86,6 +87,13 @@ def sample_files(raw_data_path, sample_rate, dehydrated_sample_path, id_column):
         print(f'sampling for dataset on {fname}')
         # save the sample to the path
         a_sample.to_csv(os.path.join(dehydrated_sample_path, fname), index = False, header = None)
+
+# Set up Twarc with API Keys
+def configure_twarc(twarc_location, api_keys_json):
+    with open(api_keys_json) as f:
+        keys = json.load(f)
+        for key_name, key in keys.items():
+            os.system(f'{twarc_location} --{key_name} {key}')
 
 # Get the information from raw tweets we just obtained
 # processed_data_path is the path for the sampled dehydrated ids
