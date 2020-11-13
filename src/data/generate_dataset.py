@@ -3,27 +3,31 @@ import pandas as pd
 import requests
 import gzip
 import shutil
+import json
+from twarc import Twarc
 from datetime import datetime, date, timedelta
 
-# pre-condition: from_time does not change to an earlier time (kinda bad but doesn't hurt here)
 # Get the last_day_added based on the latest date in your dataset
 def get_last_day(raw_data_path, from_time):
-    # Failsafe in case you have no raw data
+    
+    # Earliest possible date
     last_day_added = datetime.strptime(from_time, '%Y-%m-%d').date()
+    
     # Get all filenames of our raw data
     for name in os.listdir(raw_data_path):
-        # Just in case a file name doesn't have the date
         try:
             # Get the date from the name
             name_date = datetime.strptime(name[:10], '%Y-%m-%d').date()
             # Get maximum date
             if last_day_added < name_date:
                 last_day_added = name_date
+                
+        # Non-data file found
         except:
             print(f'{name} does not have a date.')
     return last_day_added
 
-# Updates your dataset FROM from_time date (YYYY-MM-DD) TO today
+# Updates your dataset FROM from_time date (YYYY-MM-DD) TO to_time date
 def download_latest_datasets(raw_data_path, from_time, to_time, cleaned = False):
     # Get days of data between range
     last_day = get_last_day(raw_data_path, from_time)
@@ -64,50 +68,50 @@ def download_latest_datasets(raw_data_path, from_time, to_time, cleaned = False)
             print(f'There is no data for {day_str}')
             os.remove(filename)
             os.remove(filename2)
-    return 
 
-# helper method for sample_files
-def sample(df, sample_rate, id_column):
+
+# Set up Twarc with API Keys
+def configure_twarc(api_keys_json):
+    with open(api_keys_json) as f:
+        keys = json.load(f)
+        t = Twarc(
+            keys['consumer_key'],
+            keys['consumer_secret'],
+            keys['access_token'],
+            keys['access_token_secret']
+        )
+    return t
+
+
+# For a day's worth of tweets, sample one out of every number of tweets
+def sample_file(file_path, sample_rate, id_column):
+    df = pd.read_csv(file_path, sep='\t')
     return df.iloc[::sample_rate, :][id_column]
 
-def sample_files(raw_data_path, sample_rate, dehydrated_sample_path, id_column):
-    if not os.path.exists(dehydrated_sample_path):
-        os.makedirs(dehydrated_sample_path)
-    # find the filenames 
-    file_names = sorted([name for name in os.listdir(raw_data_path) if 'dataset' in name])
-    # for every .tsv under the directory
-    for file in file_names:
-        # read the file into df
-        df = pd.read_table(f'{os.path.join(raw_data_path, file)}')
-        # sample it
-        a_sample = sample(df, sample_rate, id_column)
-        # get the saving file name {original_file_name}.txt 
-        fname = file.split('.')[0] + '.txt'
-        print(f'sampling for dataset on {fname}')
-        # save the sample to the path
-        a_sample.to_csv(os.path.join(dehydrated_sample_path, fname), index = False, header = None)
 
 # Get the information from raw tweets we just obtained
-# processed_data_path is the path for the sampled dehydrated ids
-def rehydrate_tweets(raw_data_path, processed_data_path, project_path, json_data_path, sample_rate, id_column, twarc_location):
-    # Sample data and write to processed_data_path
-#     sample_files(raw_data_path, sample_rate, processed_data_path, id_column)
-    
-    # Rehydrate text file
-    if not os.path.exists(json_data_path):
-        os.makedirs(json_data_path)
+def rehydrate_tweets(raw_data_path, json_data_path, sample_rate, id_column, api_keys_json):
+    # Start and configure Twarc
+    t = configure_twarc(api_keys_json)
         
-    sample_names = set([name.split('.')[0] for name in os.listdir(processed_data_path)])
-    json_names = set([name.split('.')[0] for name in os.listdir(json_data_path)])
+    # Find out which days of Twitter data we haven't sampled from
+    sample_names = set([name.split('.')[0] for name in os.listdir(raw_data_path) if '202' in name])
+    json_names = set([name.split('.')[0] for name in os.listdir(json_data_path) if '202' in name])
     missing_names = sample_names - json_names
-    print(f'here are the missing jsons: {missing_names}')
+    print(f'Here are the missing JSONs: {missing_names}')
         
+    # Rehydrate data from days we haven't rehydrated from yet
     for file in sorted(missing_names):
-        # absolute path for txt id file
-        abs_path = project_path + os.path.join(processed_data_path, file + '.txt')
-        # absolute path for target directory
-        name = file + '.jsonl'
-        abs_target_path = project_path + json_data_path + name
-        print(f'saving to {abs_target_path}')
+        # Sample a subset of data from our raw ID's
+        raw_path = os.path.join(raw_data_path, file + '.tsv')
+        data_sample = sample_file(raw_path, sample_rate, id_column)
         
-        os.system(f'{twarc_location} hydrate {abs_path} > {abs_target_path}')
+        # Generate a directory/filename to save our hydrated tweets
+        name = file + '.jsonl'
+        target_path = json_data_path + name
+        print(f'saving to {target_path}')
+        
+        # Write to file
+        with open(target_path, 'w') as outfile:
+            for tweet in t.hydrate(data_sample):
+                outfile.write(json.dumps(tweet) + '\n')

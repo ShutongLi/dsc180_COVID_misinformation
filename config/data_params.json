@@ -1,13 +1,9 @@
 {
-    "raw_data_path": "../shared_dir",
-    "dehydrated_data_path": "data/temp/sample_by_date/",
-    "absolute_project_path": "~/dsc180_project_structure/",
-    "twarc_path": "~/.local/bin/twarc",
-    "id_column": "tweet_id",
+    "raw_data_path": "data/raw",
     "rehydrated_json_path": "data/temp/rehydration/",
-    "rehydrated_df_path": "~/dsc180_project_structure/data/temp/tweets_processing.csv",
-    "day": "2020-10-02",
+    "api_keys": "api_keys.json",
     "from_day": "2020-03-22",
     "to_day": "2020-07-31",
+    "id_column": "tweet_id",
     "want_cleaned": false
 }
