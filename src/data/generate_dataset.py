@@ -4,6 +4,7 @@ import requests
 import gzip
 import shutil
 import json
+import subprocess
 from datetime import datetime, date, timedelta
 
 # pre-condition: from_time does not change to an earlier time (kinda bad but doesn't hurt here)
@@ -89,18 +90,24 @@ def sample_files(raw_data_path, sample_rate, dehydrated_sample_path, id_column):
         a_sample.to_csv(os.path.join(dehydrated_sample_path, fname), index = False, header = None)
 
 # Set up Twarc with API Keys
-def configure_twarc(twarc_location, api_keys_json):
+def configure_twarc(api_keys_json):
     with open(api_keys_json) as f:
         keys = json.load(f)
-        for key_name, key in keys.items():
-            os.system(f'{twarc_location} --{key_name} {key}')
+        t = Twarc(
+            keys['consumer_key'],
+            keys['consumer_secret'],
+            keys['access_token'],
+            keys['access_token_secret']
+        )
+    return t
 
 # Get the information from raw tweets we just obtained
 # processed_data_path is the path for the sampled dehydrated ids
-def rehydrate_tweets(raw_data_path, processed_data_path, project_path, json_data_path, sample_rate, id_column, twarc_location):
+def rehydrate_tweets(raw_data_path, processed_data_path, project_path, json_data_path, sample_rate, id_column, twarc_location, api_keys_json):
     # Sample data and write to processed_data_path
 #     sample_files(raw_data_path, sample_rate, processed_data_path, id_column)
     
+    t = configure_twarc(twarc_location, api_keys_json)
     # Rehydrate text file
     if not os.path.exists(json_data_path):
         os.makedirs(json_data_path)
@@ -118,4 +125,7 @@ def rehydrate_tweets(raw_data_path, processed_data_path, project_path, json_data
         abs_target_path = project_path + json_data_path + name
         print(f'saving to {abs_target_path}')
         
-        os.system(f'{twarc_location} hydrate {abs_path} > {abs_target_path}')
+        with open(abs_target_path, 'w') as outfile:
+            for tweet in t.hydrate(abs_path):
+                outfile.write(tweet)
+                outfile.write('\n')
