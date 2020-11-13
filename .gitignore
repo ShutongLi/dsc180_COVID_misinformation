@@ -1,5 +1,5 @@
 #data
-data/
+/data/
 *.zip
 id.txt
 .twarc
@@ -7,4 +7,4 @@ twarc.log
 .idea
 __pycache__
 
-.ipynb_checkpointsdata
+.ipynb_checkpoints
