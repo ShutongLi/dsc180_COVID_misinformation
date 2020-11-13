@@ -1,3 +1,4 @@
+
 # The Spread of Misinformation on Twitter
 Observing how misinformation and conspiracies are spread through social media.
 
@@ -7,32 +8,43 @@ Our goal explore the ways and extent to which misinformation is spread throughou
 
 ## Contents
 
-A requirements.txt file is included for installing the necessary packages to run the code. However, we use the [Twarc package](https://scholarslab.github.io/learn-twarc/), which requires a Twitter API key to run properly.
+- `src` contains the source code of our project, including algorithms for data extraction, analysis, and modelling.
+- `notebooks` contain some examples of the models this code will generate, detailing our findings under the circumstances in which we conducted our testing.
+- `config` contains easily changable parameters to test the data under various circumstances or change directories as needed.
+- `run.py` will build and run different the different parts of the source code, as needed by the user.
+- `requirements.txt` lists the Python package dependencies of which the code relies on. 
+- `references` cite the sources we used to construct this project.
 
-Raw data is taken from a local/remote directory not included in this repository. Its paths are located in the config directory (data_params.json), and can be changed for replicative use. 
-
-Our source code currently houses our data ingestion program, under the data directory.
 
 ## How to Run
-Please configure Twarc with your proper keys before running with the following command:
 
+- To properly obtain the data from Twitter, you must first apply for a [Developer Account](https://developer.twitter.com/en/apply-for-access) to obtain API keys.
+- Save your tokens in the following JSON format in your home directory (or wherever you set your API_key directory to in `config/data_params.json`):
 ```
-twarc configure
+{
+    "consumer_key": [Your Consumer Key],
+    "consumer_secret": [Your Secret Consumer Key],
+    "access_token": [Your Access Token],
+    "access_token_secret": [Your Secret Access Token]
+}
 ```
-
-Note that you may not be able to run Twarc without specifying the correct file location. A Docker setup will be provided in the near future.
-
-After you have [properly configured Twarc](https://scholarslab.github.io/learn-twarc/01-quick-start.html), set your data paths 
-to your Tweet ID set. Running run.py will return a set of properly rehydrated tweets. 
+- Install the dependencies by running `pip install -r requirements.txt` from the root directory of the project.
+- 
+### Building the project stages using `run.py`
+- To download and rehydrate the data, run `python run.py data`
+	- This downloads, samples, and transforms data from the Panacea Lab repository to the directory specified in `config/data_params.json`
+- To clean up and delete excess data, run `python run.py clean`
+	- This deletes all files and directories within the directory specified in `config/clear_params.json`
 
 ## Project Work Splits
 Hasan
-- Implemented data auto-download
-- Organized config
-- Wrote Readme
-- Wrote writeup introduction
+- Overhauled data download/hydration
+- Established project targets
+- Implemented minor version control fixes
+- Updated README
 
 Shutong
-- Implemented data hydration
-- Organized config
-- Wrote writeup description/purpose
+- Overhauled data download/hydration
+- Implemented feature extraction
+- Developed figure generating code for EDA
+- Wrote EDA

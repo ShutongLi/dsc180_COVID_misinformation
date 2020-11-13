@@ -6,16 +6,16 @@ from src.data import clear
 
 # main operation
 def main(targets):
-    # Clear out raw data directory
+    # Clear out data directories
     if 'clean' in targets:
-        with open('./config/data_params.json') as f:
-            data_params = json.load(f)
+        with open('./config/clear_params.json') as f:
+            clear_params = json.load(f)
         
         # Cfg variables
-        raw_data_path = data_params['raw_data_path']
+        delete_paths = clear_params['delete_paths']
         
         # Clear out raw data
-        clear.obliviate(raw_data_path)
+        clear.clean(delete_paths)
         
     # Download and rehydrate Tweets pertaining to COVID-19
     if 'data' in targets:
