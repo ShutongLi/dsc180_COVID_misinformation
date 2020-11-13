@@ -91,16 +91,22 @@ def sample_files(raw_data_path, sample_rate, dehydrated_sample_path, id_column):
 # processed_data_path is the path for the sampled dehydrated ids
 def rehydrate_tweets(raw_data_path, processed_data_path, project_path, json_data_path, sample_rate, id_column, twarc_location):
     # Sample data and write to processed_data_path
-    sample_files(raw_data_path, sample_rate, processed_data_path, id_column)
+#     sample_files(raw_data_path, sample_rate, processed_data_path, id_column)
     
     # Rehydrate text file
     if not os.path.exists(json_data_path):
         os.makedirs(json_data_path)
-    for file in os.listdir(processed_data_path):
+        
+    sample_names = set([name.split('.')[0] for name in os.listdir(processed_data_path)])
+    json_names = set([name.split('.')[0] for name in os.listdir(json_data_path)])
+    missing_names = sample_names - json_names
+    print(f'here are the missing jsons: {missing_names}')
+        
+    for file in sorted(missing_names):
         # absolute path for txt id file
-        abs_path = project_path + os.path.join(processed_data_path, file)
+        abs_path = project_path + os.path.join(processed_data_path, file + '.txt')
         # absolute path for target directory
-        name = file.split('.')[0] + '.jsonl'
+        name = file + '.jsonl'
         abs_target_path = project_path + json_data_path + name
         print(f'saving to {abs_target_path}')
         

@@ -6,6 +6,7 @@ import shutil
 # helper function
 def obliviate(path):
     for fname in os.listdir(path):
+        print(f'deleting{fname} under {path}')
         file_path = os.path.join(path, fname)
         try:
             if os.path.isfile(file_path):
