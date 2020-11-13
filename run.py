@@ -17,7 +17,6 @@ def main():
     project_path = data_params['absolute_project_path']
     twarc_path = data_params['twarc_path']
     rehydrated_json_path = data_params['rehydrated_json_path']
-    rehydrated_df_path = data_params['rehydrated_df_path']
     id_column = data_params['id_column']
     from_day = data_params['from_day']
     to_day = data_params['to_day']
