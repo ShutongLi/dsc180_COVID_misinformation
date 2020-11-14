@@ -24,4 +24,3 @@ def obliviate(path):
 def clean(paths):
     for path in paths:
         obliviate(path)
-    

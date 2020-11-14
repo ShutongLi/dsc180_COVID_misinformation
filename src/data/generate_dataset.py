@@ -95,8 +95,8 @@ def rehydrate_tweets(raw_data_path, json_data_path, sample_rate, id_column, api_
     t = configure_twarc(api_keys_json)
         
     # Find out which days of Twitter data we haven't sampled from
-    sample_names = set([name.split('.')[0] for name in os.listdir(raw_data_path) if '202' in name])
-    json_names = set([name.split('.')[0] for name in os.listdir(json_data_path) if '202' in name])
+    sample_names = set([name.split('.')[0] for name in os.listdir(raw_data_path) if 'dataset' in name])
+    json_names = set([name.split('.')[0] for name in os.listdir(json_data_path) if 'dataset' in name])
     missing_names = sample_names - json_names
     print(f'Here are the missing JSONs: {missing_names}')
         

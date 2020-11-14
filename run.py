@@ -1,7 +1,10 @@
+import os
 import sys
 import json
-from src.data import generate_dataset
 from src.data import clear
+from src.data import generate_dataset
+from src.features import generate_features
+from src.visualization import plot_graphs
 
 
 # main operation
@@ -40,6 +43,37 @@ def main(targets):
         
         # Rehydrate a subsample of tweet data
         generate_dataset.rehydrate_tweets(raw_data_path, rehydrated_json_path, sample_rate, id_column, api_keys)
+        
+    if 'visualize' in targets:
+        with open('./config/viz_params.json') as f:
+            viz_params = json.load(f)
+        
+        # Cfg variables
+        path = viz_params['path']
+        top_k = viz_params['top_k']
+        top_k_fig_path = viz_params['top_k_fig_path']
+        user_hist_path = viz_params['user_hist_path']
+        user_hist_zoom_path = viz_params['user_hist_zoom_path']
+        good_path = viz_params['good_path']
+        bad_path = viz_params['bad_path']
+        good_tags = viz_params['good_tags']
+        bad_tags = viz_params['bad_tags']
+        maximum_posts = viz_params['maximum_posts']
+        
+        jsons = [os.path.join(path, name) for name in sorted(os.listdir(path)) if 'dataset' in name]
+        
+        # Get features
+        #hashtag_features = generate_features.count_features(jsons, top_k = top_k)
+        #user_features = generate_features.count_features(jsons, top_k = top_k, mode = 'user')
+        scientific_data, misinformation_data = generate_features.count_over_time(jsons, good_tags, bad_tags)
+        
+        #plot_graphs.top_k_bar(hashtag_features, top_k, top_k_fig_path)
+        
+        #plot_graphs.user_hist(user_features, top_k, user_hist_path)
+        #plot_graphs.user_hist(user_features, top_k, maximum_posts, user_hist_zoom_path)
+        
+        plot_graphs.plot_tags(good_tags, scientific_data, good_path)
+        plot_graphs.plot_tags(bad_tags, misinformation_data, bad_path)
 
 if __name__ == '__main__':
     args = sys.argv[1:]

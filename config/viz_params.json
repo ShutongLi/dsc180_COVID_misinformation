@@ -1,0 +1,12 @@
+{
+    "path": "data/temp/rehydration",
+    "top_k_fig_path": "notebooks/topk.png",
+    "user_hist_path": "notebooks/user_hist.png",
+    "user_hist_zoom_path": "notebooks/user_zoom_hist.png",
+    "good_path": "notebooks/scientific_hashtags.png",
+    "bad_path": "notebooks/misinformation_hashtags.png",
+    "good_tags": ["SocialDistancing", "StayHome", "WearAMask"],
+    "bad_tags": ["WuhanVirus", "Hydroxychloroquine", "MAGA"],
+    "maximum_posts": 10,
+    "top_k": 50
+}
