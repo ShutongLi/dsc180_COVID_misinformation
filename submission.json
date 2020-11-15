@@ -1,0 +1,7 @@
+{
+    "config": ["config/clear_params.json", "config/data_params.json", "config/sample_params.json", "config/viz_params.json"]
+    "build": "run.py"
+    "library": ["src"]
+    "notebook": ["notebooks/EDA.ipynb"]
+    "targets": ["data", "clean", "visualize"]
+}
