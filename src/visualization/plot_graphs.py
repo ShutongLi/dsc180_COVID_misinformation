@@ -11,13 +11,13 @@ def top_k_bar(feature, k, save_path):
     
     
 # Generate a histogram of the features
-def user_hist(feature, k, save_path, maximum_posts = None):
+def user_hist(feature, save_path, maximum_posts = None):
     feature = feature.rename('posts per user')
     plt.figure(figsize = (15, 14))
     if maximum_posts is None:
-        sns.distplot(total_user.loc[total_user < maximum_posts])
+        sns.distplot(feature)
     else:
-        sns.distplot(total_user)
+        sns.distplot(feature.loc[feature < maximum_posts])
     plt.title('density of number of posts per user')
     plt.savefig(save_path, bbox_inches='tight')
     return plt

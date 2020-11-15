@@ -35,6 +35,8 @@ Our goal explore the ways and extent to which misinformation is spread throughou
 	- This downloads, samples, and transforms data from the Panacea Lab repository to the directory specified in `config/data_params.json`
 - To clean up and delete excess data, run `python run.py clean`
 	- This deletes all files and directories within the directory specified in `config/clear_params.json`
+- To process features and run some visualizations, run `python run.py visualize`
+	- This aggregates some statistics on the data, and prints visualizations to the directories specified in `config/viz_params.json`
 
 ## Project Work Splits
 Hasan

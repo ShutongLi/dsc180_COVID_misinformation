@@ -17,7 +17,7 @@ def user_counts(json):
 
 
 # Count either hashtags or users in all available JSON files
-def count_features(jsons, top_k, mode = 'hashtag'):
+def count_features(jsons, top_k = None, mode = 'hashtag'):
     # Decide whether to count hashtags or users
     if mode == 'hashtag':
         method = hashtag_counts
@@ -34,10 +34,8 @@ def count_features(jsons, top_k, mode = 'hashtag'):
         total_series = total_series.add(vc_series, fill_value = 0)
         print(f'vc shape {total_series.shape}', end='\r')
         
-    # Return the top K users/hashtags in all of the data
-    if top_k is None:
-        return total_series.sort_values().sort_values(ascending=False)
-    return total_series.sort_values(ascending=False).iloc[:top_k]
+    # Return the top users/hashtags in all of the data
+    return total_series.sort_values().sort_values(ascending=False)
 
 
 # Get the number of certain used hashtags over time

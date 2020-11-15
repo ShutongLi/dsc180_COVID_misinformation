@@ -63,14 +63,15 @@ def main(targets):
         jsons = [os.path.join(path, name) for name in sorted(os.listdir(path)) if 'dataset' in name]
         
         # Get features
-        #hashtag_features = generate_features.count_features(jsons, top_k = top_k)
-        #user_features = generate_features.count_features(jsons, top_k = top_k, mode = 'user')
+        hashtag_features = generate_features.count_features(jsons)
+        user_features = generate_features.count_features(jsons, mode = 'user')
         scientific_data, misinformation_data = generate_features.count_over_time(jsons, good_tags, bad_tags)
         
-        #plot_graphs.top_k_bar(hashtag_features, top_k, top_k_fig_path)
+        # Get plots
+        plot_graphs.top_k_bar(hashtag_features, top_k, top_k_fig_path)
         
-        #plot_graphs.user_hist(user_features, top_k, user_hist_path)
-        #plot_graphs.user_hist(user_features, top_k, maximum_posts, user_hist_zoom_path)
+        plot_graphs.user_hist(user_features, user_hist_path)
+        plot_graphs.user_hist(user_features, user_hist_zoom_path, maximum_posts)
         
         plot_graphs.plot_tags(good_tags, scientific_data, good_path)
         plot_graphs.plot_tags(bad_tags, misinformation_data, bad_path)
