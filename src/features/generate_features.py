@@ -26,14 +26,15 @@ def count_features(jsons, top_k = None, mode = 'hashtag'):
         
     # Compile count of first JSON in list
     total_series = method(jsons[0])
-    print(f'vc shape {total_series.shape}', end='\r')
+    print(f'vc shape {total_series.shape}')
     
-    # Append counts to every subsequent JSON
-    for json in jsons[1:]:
-        vc_series = method(json)
-        total_series = total_series.add(vc_series, fill_value = 0)
-        print(f'vc shape {total_series.shape}', end='\r')
-        
+    if len(jsons) > 1:
+        # Append counts to every subsequent JSON
+        for json in jsons[1:]:
+            vc_series = method(json)
+            total_series = total_series.add(vc_series, fill_value = 0)
+            print(f'vc shape {total_series.shape}')
+
     # Return the top users/hashtags in all of the data
     return total_series.sort_values().sort_values(ascending=False)
 

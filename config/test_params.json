@@ -1,0 +1,12 @@
+{
+    "path": "test/testdata",
+    "top_k_fig_path": "test/topk.png",
+    "user_hist_path": "test/user_hist.png",
+    "user_hist_zoom_path": "test/user_zoom_hist.png",
+    "good_path": "test/scientific_hashtags.png",
+    "bad_path": "test/misinformation_hashtags.png",
+    "good_tags": ["test1", "test2"],
+    "bad_tags": ["test3"],
+    "maximum_posts": 10,
+    "top_k": 3
+}

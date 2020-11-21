@@ -28,7 +28,7 @@ def get_last_day(raw_data_path, from_time):
     return last_day_added
 
 # Updates your dataset FROM from_time date (YYYY-MM-DD) TO to_time date
-def download_latest_datasets(raw_data_path, from_time, to_time, cleaned = False, test = False):
+def download_latest_datasets(raw_data_path, from_time, to_time, cleaned = False):
     # Get days of data between range
     last_day = get_last_day(raw_data_path, from_time)
     days_between = pd.date_range(last_day, to_time, freq='d')
@@ -37,11 +37,6 @@ def download_latest_datasets(raw_data_path, from_time, to_time, cleaned = False,
     clean_suffix = ''
     if cleaned:
         clean_suffix = '_clean'
-        
-    # suffix _test for test cases
-    test_suffix = ''
-    if test:
-        test_suffix = '_test'
     
     # Download the data from each day
     for day in days_between:
@@ -59,8 +54,8 @@ def download_latest_datasets(raw_data_path, from_time, to_time, cleaned = False,
         
         # Separate gzipped and TSV files
         try:
-            filename = f'{raw_data_path}/gzips/{day_str}{clean_suffix}{test_suffix}-dataset.tsv.gz'
-            filename2 = f'{raw_data_path}/{day_str}{clean_suffix}{test_suffix}-dataset.tsv'
+            filename = f'{raw_data_path}/gzips/{day_str}{clean_suffix}-dataset.tsv.gz'
+            filename2 = f'{raw_data_path}/{day_str}{clean_suffix}-dataset.tsv'
             with open(filename, 'wb') as f:
                 r = requests.get(url)
                 f.write(r.content)
@@ -102,14 +97,9 @@ def rehydrate_tweets(raw_data_path, json_data_path, sample_rate, id_column, api_
     # Find out which days of Twitter data we haven't sampled from
     sample_names = set([name.split('.')[0] for name in os.listdir(raw_data_path) if 'dataset' in name])
     json_names = set([name.split('.')[0] for name in os.listdir(json_data_path) if 'dataset' in name])
-    
-    # Test case: just rehydrate files with _test
-    if test:
-        missing_names = [name in sample_names if 'test' in name]
-        print(f'Hydrating test files: {missing_names}')
-    else:
-        missing_names = sample_names - json_names
-        print(f'Here are the missing JSONs: {missing_names}')
+
+    missing_names = sample_names - json_names
+    print(f'Here are the missing JSONs: {missing_names}')
         
     # Rehydrate data from days we haven't rehydrated from yet
     for file in sorted(missing_names):
