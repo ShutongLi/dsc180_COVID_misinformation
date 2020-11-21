@@ -49,7 +49,7 @@ def main(targets):
             viz_params = json.load(f)
         
         # Cfg variables
-        path = viz_params['path']
+        data_path = viz_params['path']
         top_k = viz_params['top_k']
         top_k_fig_path = viz_params['top_k_fig_path']
         user_hist_path = viz_params['user_hist_path']
@@ -60,7 +60,7 @@ def main(targets):
         bad_tags = viz_params['bad_tags']
         maximum_posts = viz_params['maximum_posts']
         
-        jsons = [os.path.join(path, name) for name in sorted(os.listdir(path)) if 'dataset' in name]
+        jsons = [os.path.join(data_path, name) for name in sorted(os.listdir(data_path)) if 'dataset' in name]
         
         # Get features
         hashtag_features = generate_features.count_features(jsons)
@@ -75,6 +75,66 @@ def main(targets):
         
         plot_graphs.plot_tags(good_tags, scientific_data, good_path)
         plot_graphs.plot_tags(bad_tags, misinformation_data, bad_path)
+    
+    if 'test' in targets:
+        with open('./config/clear_params.json') as f:
+            clear_params = json.load(f)
+        with open('./config/data_params.json') as f:
+            data_params = json.load(f)
+        with open('./config/sample_params.json') as f:
+            sample_params = json.load(f)
+        with open('./config/viz_params.json') as f:
+            viz_params = json.load(f)
+            
+        # Cfg variables
+        delete_paths = clear_params['delete_paths']
+        
+        raw_data_path = data_params['raw_data_path']
+        rehydrated_json_path = data_params['rehydrated_json_path']
+        api_keys = data_params['api_keys']
+        from_day = data_params['from_day']
+        id_column = data_params['id_column']
+        want_cleaned = data_params['want_cleaned']
+
+        sample_rate = sample_params['sample_every']
+        
+        data_path = viz_params['path']
+        top_k = viz_params['top_k']
+        top_k_fig_path = viz_params['top_k_fig_path']
+        user_hist_path = viz_params['user_hist_path']
+        user_hist_zoom_path = viz_params['user_hist_zoom_path']
+        good_path = viz_params['good_path']
+        bad_path = viz_params['bad_path']
+        good_tags = viz_params['good_tags']
+        bad_tags = viz_params['bad_tags']
+        maximum_posts = viz_params['maximum_posts']
+        
+        # Update dataset from some date
+        # EDIT: Only getting 1 day's worth of data (from_day)
+        generate_dataset.download_latest_datasets(raw_data_path, from_day, from_day, want_cleaned)
+        
+        # Rehydrate a subsample of tweet data
+        generate_dataset.rehydrate_tweets(raw_data_path, rehydrated_json_path, sample_rate, id_column, api_keys)
+        
+        # Clear out raw data
+        clear.clean(delete_paths)
+        
+        jsons = [os.path.join(data_path, name) for name in sorted(os.listdir(data_path)) if 'test' in name]
+        
+        # Get features
+        hashtag_features = generate_features.count_features(jsons)
+        user_features = generate_features.count_features(jsons, mode = 'user')
+        scientific_data, misinformation_data = generate_features.count_over_time(jsons, good_tags, bad_tags)
+        
+        # Get plots
+        plot_graphs.top_k_bar(hashtag_features, top_k, top_k_fig_path)
+        
+        plot_graphs.user_hist(user_features, user_hist_path)
+        plot_graphs.user_hist(user_features, user_hist_zoom_path, maximum_posts)
+        
+        plot_graphs.plot_tags(good_tags, scientific_data, good_path)
+        plot_graphs.plot_tags(bad_tags, misinformation_data, bad_path)
+        
 
 if __name__ == '__main__':
     args = sys.argv[1:]
