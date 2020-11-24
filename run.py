@@ -47,7 +47,7 @@ def main(targets):
     if 'visualize' in targets:
         with open('./config/viz_params.json') as f:
             viz_params = json.load(f)
-        
+
         # Cfg variables
         path = viz_params['path']
         top_k = viz_params['top_k']
@@ -61,6 +61,42 @@ def main(targets):
         maximum_posts = viz_params['maximum_posts']
         
         jsons = [os.path.join(path, name) for name in sorted(os.listdir(path)) if 'dataset' in name]
+        
+        # Get features
+        hashtag_features = generate_features.count_features(jsons)
+        user_features = generate_features.count_features(jsons, mode = 'user')
+        scientific_data, misinformation_data = generate_features.count_over_time(jsons, good_tags, bad_tags)
+        
+        # Get plots
+        plot_graphs.top_k_bar(hashtag_features, top_k, top_k_fig_path)
+        
+        plot_graphs.user_hist(user_features, user_hist_path)
+        plot_graphs.user_hist(user_features, user_hist_zoom_path, maximum_posts)
+        
+        plot_graphs.plot_tags(good_tags, scientific_data, good_path)
+        plot_graphs.plot_tags(bad_tags, misinformation_data, bad_path)
+        
+        if 'test' in targets:
+        with open('./config/test_params.json') as f:
+            test_params = json.load(f)
+            
+        # Cfg variables
+        data_path = test_params['path']
+        top_k = test_params['top_k']
+        top_k_fig_path = test_params['top_k_fig_path']
+        user_hist_path = test_params['user_hist_path']
+        user_hist_zoom_path = test_params['user_hist_zoom_path']
+        good_path = test_params['good_path']
+        bad_path = test_params['bad_path']
+        good_tags = test_params['good_tags']
+        bad_tags = test_params['bad_tags']
+        maximum_posts = test_params['maximum_posts']
+        
+        # Create test folder
+        if not os.path.exists('test'):
+            os.makedirs('test')
+            
+        jsons = [os.path.join(data_path, name) for name in sorted(os.listdir(data_path)) if 'test' in name]
         
         # Get features
         hashtag_features = generate_features.count_features(jsons)
