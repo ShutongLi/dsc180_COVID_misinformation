@@ -97,8 +97,9 @@ def main(targets):
         # Create test folder
         if not os.path.exists(data_path):
             os.makedirs(data_path)
-
-        jsons = [os.path.join(data_path, name) for name in sorted(os.listdir(data_path)) if 'test' in name]
+            
+        # get the test dataset rather than the actual dataset
+        jsons = [os.path.join(data_path, name) for name in sorted(os.listdir(data_path)) if 'test_data' in name]
 
         # Get features
         hashtag_features = generate_features.count_features(jsons)
