@@ -75,12 +75,14 @@ def main(targets):
         
         plot_graphs.plot_tags(good_tags, scientific_data, good_path)
         plot_graphs.plot_tags(bad_tags, misinformation_data, bad_path)
-        
-        if 'test' in targets:
-        with open('./config/test_params.json') as f:
+
+    if 'test' in targets:
+        with open('./config/test.json') as f:
             test_params = json.load(f)
-            
-        # Cfg variables
+
+        # Get configuration parameters
+        
+        # Copy past of visualization target and all the process that is remotely available in the current build
         data_path = test_params['path']
         top_k = test_params['top_k']
         top_k_fig_path = test_params['top_k_fig_path']
@@ -91,24 +93,24 @@ def main(targets):
         good_tags = test_params['good_tags']
         bad_tags = test_params['bad_tags']
         maximum_posts = test_params['maximum_posts']
-        
+
         # Create test folder
-        if not os.path.exists('test'):
-            os.makedirs('test')
-            
+        if not os.path.exists(data_path):
+            os.makedirs(data_path)
+
         jsons = [os.path.join(data_path, name) for name in sorted(os.listdir(data_path)) if 'test' in name]
-        
+
         # Get features
         hashtag_features = generate_features.count_features(jsons)
         user_features = generate_features.count_features(jsons, mode = 'user')
         scientific_data, misinformation_data = generate_features.count_over_time(jsons, good_tags, bad_tags)
-        
+
         # Get plots
         plot_graphs.top_k_bar(hashtag_features, top_k, top_k_fig_path)
-        
+
         plot_graphs.user_hist(user_features, user_hist_path)
         plot_graphs.user_hist(user_features, user_hist_zoom_path, maximum_posts)
-        
+
         plot_graphs.plot_tags(good_tags, scientific_data, good_path)
         plot_graphs.plot_tags(bad_tags, misinformation_data, bad_path)
 
