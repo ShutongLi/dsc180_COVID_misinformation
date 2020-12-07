@@ -7,6 +7,7 @@
     "bad_path": "visualizations/misinformation_hashtags.png",
     "good_tags": ["SocialDistancing", "StayHome", "WearAMask"],
     "bad_tags": ["WuhanVirus", "Hydroxychloroquine", "MAGA"],
+    "api_keys": "api_keys.json",
     "maximum_posts": 10,
     "top_k": 50
 }
