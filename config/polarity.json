@@ -1,0 +1,13 @@
+{
+    "top_k": 200,
+    "marker_tags": ["WuhanVirus", "hoax"],
+    "api_keys": "api_keys.json",
+    "max_iter": 20000,
+    "max_posts":100,
+    "start_date": "2020/3/22",
+    "end_date": "2020/10/1",
+    "twitter_date_pattern": "%a %b %d %H:%M:%S %z %Y",
+    "toi_con":"1239685852093169664",
+    "num_retrieve_con": 100,
+    "toi_sci":"1246208612722192385"
+}
