@@ -147,24 +147,30 @@ def user_polarity(api, username, t200_ht, lower, upper,
                                                     lower, upper, date_pattern, 
                                                     max_posts = max_posts, max_iter = max_iter)
     toi = user_ht_counts.reindex(ht_polarity.index, fill_value=0)
+    # sum of each t200 hashtag's occurence times the polarity of the hashtag 
     u_pol = (toi * ht_polarity).sum()
     if normalize:
-        if num_norm_tweets == 0:
-            return None
+        print(u_pol, num_norm_tweets)
         u_pol /= num_norm_tweets
     return u_pol
 
 ### Investigate retweets of a tweet
 def investigate_retweets(api, tid, num_retrieve_con, t200_ht, lower, upper, 
                          date_pattern, 
-                         ht_polarity, 
+                         ht_polarity, json_path, 
                          max_posts = None, max_iter = None,
                          normalize = True):
     retweets = api.retweets(tid, num_retrieve_con)
     names = [r.user.screen_name for r in retweets]
-    fh = open('con.json', "r+")
-    user_polarity_dict = json.load(fh)
+    try:
+        fh = open(json_path, "r")
+        user_polarity_dict = json.load(fh)
+        fh.close()
+    except:
+        user_polarity_dict = {}
+    fh = open(json_path,'w')
     for name in names:
+        fh.seek(0)
         if name not in user_polarity_dict.keys():
             score = user_polarity(api, name,
                                   set(ht_polarity.index), 
@@ -174,6 +180,7 @@ def investigate_retweets(api, tid, num_retrieve_con, t200_ht, lower, upper,
                                   max_iter=max_iter,
                                  )
             user_polarity_dict[name] = score
-            print(f'{name}: {score}')
+            print(f'{name}: {score}', end = '\r')
         json.dump(user_polarity_dict, fh)
+    fh.close()
     return user_polarity_dict
