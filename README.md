@@ -52,4 +52,4 @@ Shutong
 - Implemented retweet polarity calculation
 - Optimized user polarity algorithm
 - Developed retweet polarity visualization
-- Inserted notebook development work to run.py
+- Reworked src files for run.py
