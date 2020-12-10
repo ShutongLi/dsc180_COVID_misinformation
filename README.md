@@ -12,8 +12,9 @@ Our goal explore the ways and extent to which misinformation is spread throughou
 - `notebooks` contain some examples of the models this code will generate, detailing our findings under the circumstances in which we conducted our testing.
 - `config` contains easily changable parameters to test the data under various circumstances or change directories as needed.
 - `run.py` will build and run different the different parts of the source code, as needed by the user.
-- `requirements.txt` lists the Python package dependencies of which the code relies on. 
 - `references` cite the sources we used to construct this project.
+- `requirements.txt` lists the Python package dependencies of which the code relies on. 
+- Alternatively, `Dockerfile` and `run_jupyter.sh` are both included in case a user may want to recreate our project environment.
 
 
 ## How to Run
@@ -29,7 +30,8 @@ Our goal explore the ways and extent to which misinformation is spread throughou
 }
 ```
 - Install the dependencies by running `pip install -r requirements.txt` from the root directory of the project.
-- 
+- Alternately, you may reference our Dockerfile to recreate our environment (or use the existing dockerhub repository, [yunghas/spread_of_misinformation](https://hub.docker.com/repository/docker/yunghas/spread_of_misinformation)).
+
 ### Building the project stages using `run.py`
 - To download and rehydrate the data, run `python run.py data`
 	- This downloads, samples, and transforms data from the Panacea Lab repository to the directory specified in `config/data_params.json`
