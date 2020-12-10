@@ -19,7 +19,7 @@ Our goal explore the ways and extent to which misinformation is spread throughou
 ## How to Run
 
 - To properly obtain the data from Twitter, you must first apply for a [Developer Account](https://developer.twitter.com/en/apply-for-access) to obtain API keys.
-- Save your tokens in the following JSON format in your home directory (or wherever you set your API_key directory to in `config/data_params.json`):
+- Save your tokens in the following JSON format in project root directory (or wherever you set your API_key directory to in `config/data_params.json`):
 ```
 {
     "consumer_key": [Your Consumer Key],
@@ -35,18 +35,21 @@ Our goal explore the ways and extent to which misinformation is spread throughou
 	- This downloads, samples, and transforms data from the Panacea Lab repository to the directory specified in `config/data_params.json`
 - To clean up and delete excess data, run `python run.py clean`
 	- This deletes all files and directories within the directory specified in `config/clear_params.json`
-- To process features and run some visualizations, run `python run.py visualize`
+- To process some general statistics and run some visualizations on them, run `python run.py statistics`
 	- This aggregates some statistics on the data, and prints visualizations to the directories specified in `config/viz_params.json`
+- To build a histogram visualizing the polarities associated with a retweeted post, run `python run.py build`
+	- This takes two heavily retweeted tweets from `config/build_params.json`, presumably one scientific and the other misinformative, and prints visualizations to the directories specified in `config/build_params.json`
+- To run all of these steps at once, run `python run.py all`
 
 ## Project Work Splits
 Hasan
-- Overhauled data download/hydration
-- Established project targets
-- Implemented minor version control fixes
+- Implemented hashtag polarity algorithm
+- Implemented user polarity algorithm
+- Cleaned up project targets
 - Updated README
 
 Shutong
-- Overhauled data download/hydration
-- Implemented feature extraction
-- Developed figure generating code for EDA
-- Wrote EDA
+- Implemented retweet polarity calculation
+- Optimized user polarity algorithm
+- Developed retweet polarity visualization
+- Inserted notebook development work to run.py
