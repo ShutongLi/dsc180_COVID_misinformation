@@ -1,4 +1,4 @@
 {
-    "dockerhub-id": "yunghas/spread_of_misinformation",
+    "dockerhub-id": "yunghas/spread_of_misinformation:latest",
     "repository-id": "https://github.com/ShutongLi/dsc180_project_structure.git"
 }
