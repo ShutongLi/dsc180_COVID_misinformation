@@ -30,7 +30,7 @@ Our goal explore the ways and extent to which misinformation is spread throughou
 }
 ```
 - Install the dependencies by running `pip install -r requirements.txt` from the root directory of the project.
-- Alternately, you may reference our Dockerfile to recreate our environment (or use the existing dockerhub repository, [yunghas/spread_of_misinformation](https://hub.docker.com/repository/docker/yunghas/spread_of_misinformation)).
+- Alternatively, you may reference our Dockerfile to recreate our environment (or use the existing dockerhub repository, [yunghas/spread_of_misinformation](https://hub.docker.com/repository/docker/yunghas/spread_of_misinformation)).
 
 ### Building the project stages using `run.py`
 - To download and rehydrate the data, run `python run.py data`
