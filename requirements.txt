@@ -1,6 +1,6 @@
 twarc==1.11.0
 tweepy==3.9.0
-pandas==1.1.3
-numpy==1.19.2
+pandas==1.1.4
+numpy==1.18.5
 matplotlib==3.2.1
 seaborn==0.10.1
