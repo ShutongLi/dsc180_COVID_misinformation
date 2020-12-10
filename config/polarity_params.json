@@ -3,7 +3,7 @@
     "marker_tags": ["WuhanVirus", "hoax"],
     "api_keys": "api_keys.json",
     "max_iter": 50000,
-    "max_posts":200,
+    "max_posts":500,
     "start_date": "2020/3/22",
     "end_date": "2020/10/1",
     "twitter_date_pattern": "%a %b %d %H:%M:%S %z %Y",
@@ -11,5 +11,7 @@
     "num_retrieve_con": 100,
     "toi_sci":"1246208612722192385",
     "con_path":"./data/temp/hashtags/con.json",
-    "sci_path":"./data/temp/hashtags/sci.json"
+    "sci_path":"./data/temp/hashtags/sci.json",
+    "viz_path":"./visualizations/tweet_histogram.png",
+    "data_path": "data/temp/rehydration"
 }

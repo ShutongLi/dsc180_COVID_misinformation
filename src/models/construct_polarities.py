@@ -5,6 +5,21 @@ import tweepy
 import json
 import datetime
 
+# API get
+def get_tweepy_api(api_keys):
+    # Get keys
+    with open(api_keys) as f:
+        keys = json.load(f)
+    consumer_key = keys['consumer_key']
+    consumer_secret = keys['consumer_secret']
+    access_token = keys['access_token']
+    access_token_secret = keys['access_token_secret']
+    
+    # Set keys
+    auth = tweepy.OAuthHandler(consumer_key, consumer_secret)
+    auth.set_access_token(access_token, access_token_secret)
+    return tweepy.API(auth, wait_on_rate_limit=True)
+
 # Count the number of occurences of every hashtag in the JSON
 def hashtag_counts(json, marker_ht = None):
     df = pd.read_json(json, lines = True)
@@ -155,13 +170,18 @@ def user_polarity(api, username, t200_ht, lower, upper,
     return u_pol
 
 ### Investigate retweets of a tweet
-def investigate_retweets(api, tid, num_retrieve_con, t200_ht, lower, upper, 
+def investigate_retweets(tid, num_retrieve_con, t200_ht, lower, upper, 
                          date_pattern, 
                          ht_polarity, json_path, 
                          max_posts = None, max_iter = None,
+                         api = None,
                          normalize = True):
-    retweets = api.retweets(tid, num_retrieve_con)
-    names = [r.user.screen_name for r in retweets]
+    
+    if api is None:
+        return {'user1': 2, 'user2': 1}
+    else:
+        retweets = api.retweets(tid, num_retrieve_con)
+        names = [r.user.screen_name for r in retweets]
     try:
         fh = open(json_path, "r")
         user_polarity_dict = json.load(fh)
