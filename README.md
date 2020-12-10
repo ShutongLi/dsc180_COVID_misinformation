@@ -14,7 +14,7 @@ Our goal explore the ways and extent to which misinformation is spread throughou
 - `run.py` will build and run different the different parts of the source code, as needed by the user.
 - `references` cite the sources we used to construct this project.
 - `requirements.txt` lists the Python package dependencies of which the code relies on. 
-- Alternatively, `Dockerfile` and `run_jupyter.sh` are both included in case a user may want to recreate our project environment.
+
 
 
 ## How to Run
